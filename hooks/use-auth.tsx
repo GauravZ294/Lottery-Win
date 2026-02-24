@@ -40,6 +40,7 @@ interface AuthContextType {
   bankAccounts: BankAccount[];
   transactions: Transaction[];
   language: string;
+  isInitialized: boolean;
   login: (email: string, name: string) => void;
   logout: () => void;
   addTicket: (labelId: number, price: number) => string;
@@ -56,10 +57,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [tickets, setTickets] = useState<Ticket[]>([]);
-  const [walletBalance, setWalletBalance] = useState<number>(5000); // Default starting balance
+  const [walletBalance, setWalletBalance] = useState<number>(5000);
   const [bankAccounts, setBankAccounts] = useState<BankAccount[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [language, setLanguageState] = useState<string>('en');
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -70,7 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const savedTransactions = localStorage.getItem('lotto_transactions');
       const savedLang = localStorage.getItem('lotto_lang');
 
-      // Use setTimeout to avoid synchronous setState in effect
+      // Use setTimeout to avoid synchronous setState in effect and satisfy lint
       setTimeout(() => {
         if (savedUser) setUser(JSON.parse(savedUser));
         if (savedTickets) setTickets(JSON.parse(savedTickets));
@@ -78,6 +80,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (savedBanks) setBankAccounts(JSON.parse(savedBanks));
         if (savedTransactions) setTransactions(JSON.parse(savedTransactions));
         if (savedLang) setLanguageState(savedLang);
+        
+        setIsInitialized(true);
       }, 0);
     }
   }, []);
@@ -191,7 +195,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext.Provider value={{ 
       user, tickets, walletBalance, bankAccounts, transactions, language,
       login, logout, addTicket, updateWallet, addBankAccount, 
-      removeBankAccount, setPrimaryBank, setLanguage, updateProfile 
+      removeBankAccount, setPrimaryBank, setLanguage, updateProfile,
+      isInitialized
     }}>
       {children}
     </AuthContext.Provider>

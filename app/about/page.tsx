@@ -37,25 +37,25 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row gap-8 items-center">
-              <div className="bg-blue-50 p-6 rounded-3xl shrink-0">
-                <Smartphone className="text-blue-600 w-12 h-12" />
+            <div className="flex flex-col md:flex-row gap-8 items-center bg-[#1A1F2B] p-10 rounded-[3rem] border border-white/5">
+              <div className="bg-blue-500/10 p-6 rounded-3xl shrink-0 shadow-[0_0_20px_rgba(59,130,246,0.2)]">
+                <Smartphone className="text-blue-500 w-12 h-12" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-3">Premium Only</h2>
-                <p className="text-slate-600 leading-relaxed">
+                <h2 className="text-2xl font-black text-white mb-3 uppercase italic tracking-tighter">Premium Only</h2>
+                <p className="text-slate-400 leading-relaxed font-medium">
                   We focus exclusively on the latest iPhone models. By specializing, we can offer better logistics and faster delivery to our winners worldwide.
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row gap-8 items-center">
-              <div className="bg-emerald-50 p-6 rounded-3xl shrink-0">
-                <Globe className="text-emerald-600 w-12 h-12" />
+            <div className="flex flex-col md:flex-row gap-8 items-center bg-[#1A1F2B] p-10 rounded-[3rem] border border-white/5">
+              <div className="bg-emerald-500/10 p-6 rounded-3xl shrink-0 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                <Globe className="text-emerald-500 w-12 h-12" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-3">Global Reach</h2>
-                <p className="text-slate-600 leading-relaxed">
+                <h2 className="text-2xl font-black text-white mb-3 uppercase italic tracking-tighter">Global Reach</h2>
+                <p className="text-slate-400 leading-relaxed font-medium">
                   Winners from over 50 countries have already received their devices. We handle all shipping and customs duties, so you just wait for the doorbell.
                 </p>
               </div>

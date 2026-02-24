@@ -58,19 +58,10 @@ export default function Home() {
       
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Video Background */}
         <div className="absolute inset-0 z-0">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
-            className="w-full h-full object-cover opacity-30"
-          >
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-lottery-machine-4406-large.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B0E14] via-transparent to-[#0B0E14]" />
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-yellow-500/10 via-transparent to-[#0B0E14]" />
+          <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-yellow-500/10 rounded-full blur-[150px]" />
+          <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-red-500/10 rounded-full blur-[150px]" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -95,10 +86,16 @@ export default function Home() {
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <button className="bg-yellow-500 text-black px-12 py-5 rounded-full font-black uppercase italic tracking-widest hover:bg-yellow-400 transition-all shadow-[0_0_40px_rgba(234,179,8,0.3)] hover:scale-105 active:scale-95 text-lg">
+              <button 
+                onClick={() => document.getElementById('pools')?.scrollIntoView({ behavior: 'smooth' })}
+                className="bg-yellow-500 text-black px-12 py-5 rounded-full font-black uppercase italic tracking-widest hover:bg-yellow-400 transition-all shadow-[0_0_40px_rgba(234,179,8,0.3)] hover:scale-105 active:scale-95 text-lg"
+              >
                 {t.buyTicket}
               </button>
-              <button className="bg-white/10 backdrop-blur-md text-white px-12 py-5 rounded-full font-black uppercase italic tracking-widest hover:bg-white/20 transition-all border border-white/10 text-lg">
+              <button 
+                onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+                className="bg-white/10 backdrop-blur-md text-white px-12 py-5 rounded-full font-black uppercase italic tracking-widest hover:bg-white/20 transition-all border border-white/10 text-lg"
+              >
                 {t.howItWorks}
               </button>
             </div>
@@ -120,7 +117,7 @@ export default function Home() {
       </div>
 
       {/* Pools Section */}
-      <section className="py-32 bg-[#0B0E14] relative overflow-hidden">
+      <section id="pools" className="py-32 bg-[#0B0E14] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-5xl md:text-7xl font-display font-black text-white uppercase italic tracking-tighter mb-6">
@@ -146,7 +143,7 @@ export default function Home() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-32 bg-white/[0.02] border-y border-white/5">
+      <section id="how-it-works" className="py-32 bg-white/[0.02] border-y border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-5xl md:text-7xl font-display font-black text-white uppercase italic tracking-tighter mb-6">

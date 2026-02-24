@@ -8,7 +8,19 @@ import { Ticket, Calendar, Smartphone, ChevronRight } from 'lucide-react';
 import { format } from 'date-fns';
 
 export default function DashboardPage() {
-  const { user, tickets } = useAuth();
+  const { user, tickets, isInitialized } = useAuth();
+
+  if (!isInitialized) {
+    return (
+      <main className="min-h-screen flex flex-col bg-[#0B0E14]">
+        <Navbar />
+        <div className="flex-grow flex items-center justify-center p-4">
+          <div className="text-yellow-500 font-black italic animate-pulse uppercase tracking-[0.3em]">Initializing...</div>
+        </div>
+        <Footer />
+      </main>
+    );
+  }
 
   if (!user) {
     return (

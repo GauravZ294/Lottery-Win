@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
@@ -24,7 +25,7 @@ import { format } from 'date-fns';
 import { motion, AnimatePresence } from 'motion/react';
 import { translations } from '@/lib/translations';
 
-export default function ProfilePage() {
+function ProfileContent() {
   const { 
     user, 
     tickets, 
@@ -36,10 +37,24 @@ export default function ProfilePage() {
     addBankAccount, 
     removeBankAccount,
     setPrimaryBank,
-    updateProfile 
+    updateProfile,
+    isInitialized
   } = useAuth();
   
-  const [activeTab, setActiveTab] = useState<'tickets' | 'wallet' | 'bank' | 'settings'>('tickets');
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get('tab') as any;
+  
+  const [activeTab, setActiveTab] = useState<'tickets' | 'wallet' | 'bank' | 'settings'>(
+    ['tickets', 'wallet', 'bank', 'settings'].includes(initialTab) ? initialTab : 'tickets'
+  );
+
+  useEffect(() => {
+    if (initialTab && ['tickets', 'wallet', 'bank', 'settings'].includes(initialTab)) {
+      setTimeout(() => {
+        setActiveTab(initialTab);
+      }, 0);
+    }
+  }, [initialTab]);
   const [isAddingBank, setIsAddingBank] = useState(false);
   const [isAddingFunds, setIsAddingFunds] = useState(false);
   const [isWithdrawing, setIsWithdrawing] = useState(false);
@@ -51,6 +66,18 @@ export default function ProfilePage() {
   const [transactionLimit, setTransactionLimit] = useState<number | 'all'>(10);
   
   const t = translations[language] || translations.en;
+
+  if (!isInitialized) {
+    return (
+      <main className="min-h-screen flex flex-col bg-[#0B0E14]">
+        <Navbar />
+        <div className="flex-grow flex items-center justify-center">
+          <div className="text-yellow-500 font-black italic animate-pulse uppercase tracking-[0.3em]">Initializing...</div>
+        </div>
+        <Footer />
+      </main>
+    );
+  }
 
   const pools = [
     { id: 1, price: 200, title: "iPhone 16 Pro Max" },
@@ -646,5 +673,13 @@ export default function ProfilePage() {
 
       <Footer />
     </main>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#0B0E14] flex items-center justify-center text-yellow-500 font-black italic animate-pulse">LOADING...</div>}>
+      <ProfileContent />
+    </Suspense>
   );
 }

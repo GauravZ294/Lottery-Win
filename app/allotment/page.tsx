@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { useAuth } from '@/hooks/use-auth';
@@ -16,30 +17,33 @@ export default function AllotmentPage() {
   const [drawDate] = useState(new Date('2026-02-25'));
   const [isDrawDay, setIsDrawDay] = useState(false);
 
-  const pools = [
+  const pools = React.useMemo(() => [
     { id: 1, price: 200, users: 100000, winners: 10, chance: t.lowChance, color: 'text-blue-400' },
     { id: 2, price: 500, users: 50000, winners: 10, chance: t.mediumChance, color: 'text-yellow-500' },
     { id: 3, price: 1000, users: 10000, winners: 10, chance: t.highChance, color: 'text-green-500' },
-  ];
+  ], [t]);
 
-  const [winningNumbers] = useState<Record<number, string[]>>(() => {
+  const [winningNumbers, setWinningNumbers] = useState<Record<number, string[]>>({});
+
+  useEffect(() => {
     const numbers: Record<number, string[]> = {};
     pools.forEach(pool => {
       numbers[pool.id] = Array.from({ length: pool.winners }, () => 
         Math.floor(1000000 + Math.random() * 9000000).toString()
       );
     });
-    return numbers;
-  });
-
-  useEffect(() => {
+    
+    setTimeout(() => {
+      setWinningNumbers(numbers);
+    }, 0);
+    
     // Simulate draw day toggle for demo purposes
     const timer = setTimeout(() => {
       // In a real app, this would check the current date against the draw date
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [pools]);
 
   return (
     <main className="min-h-screen flex flex-col bg-[#0B0E14]">
@@ -184,12 +188,18 @@ export default function AllotmentPage() {
                   Join the ₹1000 pool for the best winning odds. Only 10,000 users compete for 10 iPhones!
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                  <button className="bg-black text-white px-12 py-5 rounded-full font-black uppercase italic tracking-widest hover:bg-slate-900 transition-all shadow-2xl">
+                  <Link 
+                    href="/#pools" 
+                    className="bg-black text-white px-12 py-5 rounded-full font-black uppercase italic tracking-widest hover:bg-slate-900 transition-all shadow-2xl"
+                  >
                     Buy ₹1000 Ticket
-                  </button>
-                  <button className="bg-white/20 text-black px-12 py-5 rounded-full font-black uppercase italic tracking-widest hover:bg-white/30 transition-all border border-black/10">
+                  </Link>
+                  <Link 
+                    href="/#pools" 
+                    className="bg-white/20 text-black px-12 py-5 rounded-full font-black uppercase italic tracking-widest hover:bg-white/30 transition-all border border-black/10"
+                  >
                     View All Pools
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

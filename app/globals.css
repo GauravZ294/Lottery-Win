@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
 @theme {
   --color-casino-gold: #FFD700;
@@ -7,18 +8,22 @@
   --color-casino-card: #1A1F2B;
 }
 
-body {
-  @apply bg-casino-dark text-white;
+@layer base {
+  body {
+    @apply bg-[#0B0E14] text-white antialiased;
+  }
 }
 
-.casino-gradient {
-  background: linear-gradient(135deg, #1A1F2B 0%, #0B0E14 100%);
-}
+@layer components {
+  .casino-gradient {
+    background: linear-gradient(135deg, #1A1F2B 0%, #0B0E14 100%);
+  }
 
-.gold-text {
-  background: linear-gradient(to bottom, #FFD700 0%, #B8860B 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  .gold-text {
+    background: linear-gradient(to bottom, #FFD700 0%, #B8860B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
 @keyframes marquee {
@@ -30,4 +35,5 @@ body {
   display: flex;
   animation: marquee 30s linear infinite;
   width: max-content;
+  will-change: transform;
 }

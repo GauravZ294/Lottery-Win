@@ -3,14 +3,15 @@
 import React from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/use-auth';
-import { Ticket, LogOut, User, Menu, X, Globe, Wallet } from 'lucide-react';
+import { Ticket, LogOut, User, Menu, X, Globe, Wallet, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { translations } from '@/lib/translations';
 
 export function Navbar() {
-  const { user, logout, language, setLanguage, walletBalance } = useAuth();
+  const { user, logout, language, setLanguage, walletBalance, isInitialized } = useAuth();
   const [isOpen, setIsOpen] = React.useState(false);
   const [isLangOpen, setIsLangOpen] = React.useState(false);
+  const [isUserOpen, setIsUserOpen] = React.useState(false);
   
   const t = translations[language] || translations.en;
 
@@ -19,6 +20,108 @@ export function Navbar() {
     { code: 'hi', name: 'हिन्दी' },
     { code: 'gu', name: 'ગુજરાતી' },
   ];
+
+  const renderUserActions = () => {
+    if (!isInitialized) {
+      return (
+        <div className="flex items-center gap-4">
+          <div className="w-20 h-8 bg-white/5 rounded-full animate-pulse" />
+          <div className="w-24 h-10 bg-white/5 rounded-full animate-pulse" />
+        </div>
+      );
+    }
+
+    if (user) {
+      return (
+        <div className="relative">
+          <button 
+            onClick={() => setIsUserOpen(!isUserOpen)}
+            className="flex items-center gap-2 text-sm font-bold text-white bg-white/10 px-4 py-2 rounded-full hover:bg-white/20 transition-colors border border-white/10"
+          >
+            <User size={16} className="text-yellow-500" />
+            <span className="max-w-[100px] truncate">{user.name}</span>
+            <ChevronDown size={14} className={`transition-transform ${isUserOpen ? 'rotate-180' : ''}`} />
+          </button>
+
+          <AnimatePresence>
+            {isUserOpen && (
+              <>
+                <div 
+                  className="fixed inset-0 z-10" 
+                  onClick={() => setIsUserOpen(false)}
+                />
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="absolute right-0 mt-2 w-56 bg-[#1A1F2B] border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-20"
+                >
+                  <div className="px-4 py-3 border-b border-white/5 bg-white/5">
+                    <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Wallet Balance</div>
+                    <div className="flex items-center gap-2 text-yellow-500 font-black italic">
+                      <Wallet size={14} />
+                      ₹{walletBalance.toLocaleString()}
+                    </div>
+                  </div>
+                  
+                  <div className="p-2">
+                    <Link 
+                      href="/profile" 
+                      onClick={() => setIsUserOpen(false)}
+                      className="flex items-center gap-3 w-full px-3 py-2.5 text-sm font-bold text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors"
+                    >
+                      <User size={16} className="text-yellow-500" />
+                      {t.profile}
+                    </Link>
+                    
+                    <button 
+                      onClick={() => {
+                        logout();
+                        setIsUserOpen(false);
+                      }}
+                      className="flex items-center gap-3 w-full px-3 py-2.5 text-sm font-bold text-red-400 hover:text-red-500 hover:bg-red-500/5 rounded-xl transition-colors"
+                    >
+                      <LogOut size={16} />
+                      Logout
+                    </button>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex items-center gap-4">
+        <Link href="/login" className="text-sm font-bold text-slate-300 hover:text-yellow-500 transition-colors uppercase tracking-widest">{t.login}</Link>
+        <Link href="/register" className="text-sm font-black text-black bg-yellow-500 px-8 py-3 rounded-full hover:bg-yellow-400 transition-all shadow-[0_0_20px_rgba(234,179,8,0.3)] hover:scale-105 active:scale-95 uppercase italic">
+          {t.joinNow}
+        </Link>
+      </div>
+    );
+  };
+
+  const renderMobileUserActions = () => {
+    if (!isInitialized) return null;
+
+    if (user) {
+      return (
+        <>
+          <Link href="/profile" className="block px-3 py-4 rounded-md text-sm font-black text-yellow-500 uppercase italic tracking-widest hover:bg-white/5">{t.profile}</Link>
+          <button onClick={logout} className="w-full text-left block px-3 py-4 rounded-md text-sm font-black text-red-500 uppercase italic tracking-widest hover:bg-white/5">Logout</button>
+        </>
+      );
+    }
+
+    return (
+      <>
+        <Link href="/login" className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.login}</Link>
+        <Link href="/register" className="block px-3 py-4 rounded-md text-sm font-black text-yellow-500 uppercase italic tracking-widest hover:bg-white/5">{t.joinNow}</Link>
+      </>
+    );
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-[#0B0E14]/90 backdrop-blur-md border-b border-white/10">
@@ -76,36 +179,17 @@ export function Navbar() {
             <Link href="/about" className="text-sm font-bold text-slate-300 hover:text-yellow-500 transition-colors uppercase tracking-widest">{t.about}</Link>
             <Link href="/support" className="text-sm font-bold text-slate-300 hover:text-yellow-500 transition-colors uppercase tracking-widest">{t.support}</Link>
             <Link href="/contact" className="text-sm font-bold text-slate-300 hover:text-yellow-500 transition-colors uppercase tracking-widest">{t.contact}</Link>
-            {user ? (
-              <div className="flex items-center gap-6">
-                <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
-                  <Wallet size={16} className="text-yellow-500" />
-                  <span className="text-sm font-black text-white italic">₹{walletBalance.toLocaleString()}</span>
-                </div>
-                <Link href="/profile" className="flex items-center gap-2 text-sm font-bold text-white bg-white/10 px-4 py-2 rounded-full hover:bg-white/20 transition-colors border border-white/10">
-                  <User size={16} className="text-yellow-500" />
-                  {user.name}
-                </Link>
-                <button 
-                  onClick={logout}
-                  className="p-2 text-slate-400 hover:text-red-500 transition-colors"
-                  title="Logout"
-                >
-                  <LogOut size={20} />
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center gap-4">
-                <Link href="/login" className="text-sm font-bold text-slate-300 hover:text-yellow-500 transition-colors uppercase tracking-widest">{t.login}</Link>
-                <Link href="/register" className="text-sm font-black text-black bg-yellow-500 px-8 py-3 rounded-full hover:bg-yellow-400 transition-all shadow-[0_0_20px_rgba(234,179,8,0.3)] hover:scale-105 active:scale-95 uppercase italic">
-                  {t.joinNow}
-                </Link>
-              </div>
-            )}
+            {renderUserActions()}
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center gap-4">
+            {isInitialized && user && (
+              <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
+                <Wallet size={14} className="text-yellow-500" />
+                <span className="text-xs font-black text-white italic">₹{walletBalance.toLocaleString()}</span>
+              </div>
+            )}
             <button onClick={() => setIsOpen(!isOpen)} className="text-slate-600">
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -128,21 +212,7 @@ export function Navbar() {
               <Link href="/about" className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.about}</Link>
               <Link href="/support" className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.support}</Link>
               <Link href="/contact" className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.contact}</Link>
-              {user ? (
-                <>
-                  <Link href="/profile" className="block px-3 py-4 rounded-md text-sm font-black text-yellow-500 uppercase italic tracking-widest hover:bg-white/5">{t.profile}</Link>
-                  <div className="px-3 py-4 flex items-center gap-2 text-white font-black italic">
-                    <Wallet size={16} className="text-yellow-500" />
-                    ₹{walletBalance.toLocaleString()}
-                  </div>
-                  <button onClick={logout} className="w-full text-left block px-3 py-4 rounded-md text-sm font-black text-red-500 uppercase italic tracking-widest hover:bg-white/5">Logout</button>
-                </>
-              ) : (
-                <>
-                  <Link href="/login" className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.login}</Link>
-                  <Link href="/register" className="block px-3 py-4 rounded-md text-sm font-black text-yellow-500 uppercase italic tracking-widest hover:bg-white/5">{t.joinNow}</Link>
-                </>
-              )}
+              {renderMobileUserActions()}
             </div>
           </motion.div>
         )}

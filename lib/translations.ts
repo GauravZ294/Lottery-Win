@@ -89,6 +89,12 @@ export const translations: Record<string, any> = {
     drawStatus: "Draw Status",
     upcoming: "Upcoming",
     completed: "Completed",
+    legalPolicy: "Legal Policy",
+    indianRegulations: "Indian Regulations",
+    compliance: "Compliance & Fair Play",
+    gamblingAct: "Public Gambling Act",
+    stateLaws: "State Specific Laws",
+    responsibleGaming: "Responsible Gaming",
   },
   hi: {
     heroTitle: "बड़ी जीत। तेज़ खेल।",
@@ -180,6 +186,12 @@ export const translations: Record<string, any> = {
     drawStatus: "ड्रॉ की स्थिति",
     upcoming: "आगामी",
     completed: "पूरा हुआ",
+    legalPolicy: "कानूनी नीति",
+    indianRegulations: "भारतीय विनियम",
+    compliance: "अनुपालन और निष्पक्ष खेल",
+    gamblingAct: "सार्वजनिक जुआ अधिनियम",
+    stateLaws: "राज्य विशिष्ट कानून",
+    responsibleGaming: "जिम्मेदार गेमिंग",
   },
   gu: {
     heroTitle: "મોટી જીત. ઝડપી રમત.",
@@ -271,5 +283,11 @@ export const translations: Record<string, any> = {
     drawStatus: "ડ્રો સ્થિતિ",
     upcoming: "આગામી",
     completed: "પૂર્ણ",
+    legalPolicy: "કાનૂની નીતિ",
+    indianRegulations: "ભારતીય નિયમો",
+    compliance: "પાલન અને નિષ્પક્ષ રમત",
+    gamblingAct: "જાહેર જુગાર અધિનિયમ",
+    stateLaws: "રાજ્ય વિશિષ્ટ કાયદા",
+    responsibleGaming: "જવાબદાર ગેમિંગ",
   }
 };

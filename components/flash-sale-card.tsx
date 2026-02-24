@@ -23,7 +23,7 @@ interface FlashSaleCardProps {
 }
 
 export function FlashSaleCard({ id, title, price, winners, totalUsers, targetDate, image }: FlashSaleCardProps) {
-  const { user, addTicket, language } = useAuth();
+  const { user, addTicket, language, isInitialized } = useAuth();
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
   const [ticketNumber, setTicketNumber] = useState<string | null>(null);
@@ -32,6 +32,7 @@ export function FlashSaleCard({ id, title, price, winners, totalUsers, targetDat
   const t = translations[language] || translations.en;
 
   const handleAction = async () => {
+    if (!isInitialized) return;
     if (!user) {
       router.push(`/register?label=${id}&price=${price}`);
       return;
@@ -126,7 +127,7 @@ export function FlashSaleCard({ id, title, price, winners, totalUsers, targetDat
                 <div className="w-6 h-6 border-4 border-black/10 border-t-black rounded-full animate-spin" />
               ) : (
                 <>
-                  {user ? t.buyTicket : t.registerToPlay}
+                  {isInitialized && user ? t.buyTicket : t.registerToPlay}
                   <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
                 </>
               )}
