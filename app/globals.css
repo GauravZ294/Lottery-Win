@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --color-casino-gold: #FFD700;
+  --color-casino-red: #E63946;
+  --color-casino-dark: #0B0E14;
+  --color-casino-card: #1A1F2B;
+}
+
+body {
+  @apply bg-casino-dark text-white;
+}
+
+.casino-gradient {
+  background: linear-gradient(135deg, #1A1F2B 0%, #0B0E14 100%);
+}
+
+.gold-text {
+  background: linear-gradient(to bottom, #FFD700 0%, #B8860B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  animation: marquee 30s linear infinite;
+  width: max-content;
+}
