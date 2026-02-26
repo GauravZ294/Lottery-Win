@@ -14,13 +14,15 @@ export default function Home() {
   const t = translations[language] || translations.en;
   
   const [winners, setWinners] = React.useState<number[]>([]);
+  const [targetDate, setTargetDate] = React.useState<Date | null>(null);
   
   React.useEffect(() => {
     setWinners([1, 2, 3, 4, 5].map(() => Math.floor(Math.random() * 9999)));
+    
+    const date = new Date();
+    date.setDate(date.getDate() + 30);
+    setTargetDate(date);
   }, []);
-
-  const thirtyDaysFromNow = new Date();
-  thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
 
   const flashSales = [
     {
@@ -29,7 +31,7 @@ export default function Home() {
       price: 200,
       winners: 10,
       totalUsers: 100000,
-      targetDate: thirtyDaysFromNow,
+      targetDate: targetDate || new Date(),
       image: "https://picsum.photos/id/160/800/800"
     },
     {
@@ -38,7 +40,7 @@ export default function Home() {
       price: 500,
       winners: 10,
       totalUsers: 50000,
-      targetDate: thirtyDaysFromNow,
+      targetDate: targetDate || new Date(),
       image: "https://picsum.photos/id/1/800/800"
     },
     {
@@ -47,7 +49,7 @@ export default function Home() {
       price: 1000,
       winners: 10,
       totalUsers: 10000,
-      targetDate: thirtyDaysFromNow,
+      targetDate: targetDate || new Date(),
       image: "https://picsum.photos/id/0/800/800"
     }
   ];

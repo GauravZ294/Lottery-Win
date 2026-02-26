@@ -173,45 +173,47 @@ export function Navbar() {
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
-            <Link href="/" className="text-sm font-bold text-slate-300 hover:text-yellow-500 transition-colors uppercase tracking-widest">{t.lotto}</Link>
+          <div className="hidden md:flex items-center gap-4 lg:gap-8">
+            <div className="hidden xl:flex items-center gap-8">
+              <Link href="/" className="text-sm font-bold text-slate-300 hover:text-yellow-500 transition-colors uppercase tracking-widest">{t.lotto}</Link>
+              <Link href="/about" className="text-sm font-bold text-slate-300 hover:text-yellow-500 transition-colors uppercase tracking-widest">{t.about}</Link>
+              <Link href="/support" className="text-sm font-bold text-slate-300 hover:text-yellow-500 transition-colors uppercase tracking-widest">{t.support}</Link>
+              <Link href="/contact" className="text-sm font-bold text-slate-300 hover:text-yellow-500 transition-colors uppercase tracking-widest">{t.contact}</Link>
+            </div>
             <Link href="/allotment" className="text-sm font-bold text-slate-300 hover:text-yellow-500 transition-colors uppercase tracking-widest">{t.allotment}</Link>
-            <Link href="/about" className="text-sm font-bold text-slate-300 hover:text-yellow-500 transition-colors uppercase tracking-widest">{t.about}</Link>
-            <Link href="/support" className="text-sm font-bold text-slate-300 hover:text-yellow-500 transition-colors uppercase tracking-widest">{t.support}</Link>
-            <Link href="/contact" className="text-sm font-bold text-slate-300 hover:text-yellow-500 transition-colors uppercase tracking-widest">{t.contact}</Link>
             {renderUserActions()}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center gap-4">
+          {/* Mobile/Tablet Menu Button */}
+          <div className="xl:hidden flex items-center gap-4">
             {isInitialized && user && (
-              <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
+              <div className="md:hidden flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
                 <Wallet size={14} className="text-yellow-500" />
                 <span className="text-xs font-black text-white italic">₹{walletBalance.toLocaleString()}</span>
               </div>
             )}
-            <button onClick={() => setIsOpen(!isOpen)} className="text-slate-600">
+            <button onClick={() => setIsOpen(!isOpen)} className="text-slate-400 hover:text-white transition-colors">
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Nav */}
+      {/* Mobile/Tablet Nav */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[#1A1F2B] border-t border-white/10 overflow-hidden"
+            className="xl:hidden bg-[#1A1F2B] border-t border-white/10 overflow-hidden"
           >
             <div className="px-4 pt-2 pb-6 space-y-1">
-              <Link href="/" className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.lotto}</Link>
-              <Link href="/allotment" className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.allotment}</Link>
-              <Link href="/about" className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.about}</Link>
-              <Link href="/support" className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.support}</Link>
-              <Link href="/contact" className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.contact}</Link>
+              <Link href="/" onClick={() => setIsOpen(false)} className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.lotto}</Link>
+              <Link href="/allotment" onClick={() => setIsOpen(false)} className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.allotment}</Link>
+              <Link href="/about" onClick={() => setIsOpen(false)} className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.about}</Link>
+              <Link href="/support" onClick={() => setIsOpen(false)} className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.support}</Link>
+              <Link href="/contact" onClick={() => setIsOpen(false)} className="block px-3 py-4 rounded-md text-sm font-black text-white uppercase italic tracking-widest hover:bg-white/5">{t.contact}</Link>
               {renderMobileUserActions()}
             </div>
           </motion.div>
